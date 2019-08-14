@@ -29,9 +29,9 @@ public class MessageProcessor implements Processor {
     private List<Sale> sales;
     private int salesCount = 0;
 
-    public MessageProcessor(Properties prop, Report report) {
+    public MessageProcessor(Properties prop) {
         sales = new ArrayList();
-        report = new Report();
+        report = new Report(sales);
         this.prop = prop;
         this.filename = prop.getProperty("inbound.messages.filename");
         this.fileDirectory = prop.getProperty("inbound.messages.directory");
@@ -42,6 +42,11 @@ public class MessageProcessor implements Processor {
         Sale sale = new Sale(input);
         salesCount++;
         sales.add(sale);
+        
+        if(salesCount == 10){
+            salesCount = 0;
+            report.generateReport();
+        }
     }
 
     public void read() {

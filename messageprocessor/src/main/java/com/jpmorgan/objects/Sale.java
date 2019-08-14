@@ -12,7 +12,7 @@ package com.jpmorgan.objects;
 public final class Sale {
 
     private String type;
-    private double value;
+    private double cost;
     private int amount;
 
     public Sale(String input) {
@@ -21,12 +21,14 @@ public final class Sale {
 
             if (line.length == 2) {
                 this.setType(line[0]);
-                this.setAmount(Integer.parseInt(line[1]));
-            }else if (line.length == 3) {
+                this.setCost(Double.parseDouble(line[1]));
+            }
+            else if (line.length == 3) {
                 this.setType(line[0]);
-                this.setAmount(Integer.parseInt(line[1]));
-                this.setValue(Double.parseDouble(line[2]));
-            }else{
+                this.setCost(Double.parseDouble(line[1]));
+                this.setAmount(Integer.parseInt(line[2]));
+            }
+            else {
                 System.out.println("Message in incorrect format!");
             }
         }
@@ -43,20 +45,20 @@ public final class Sale {
         this.type = type;
     }
 
-    public double getValue() {
-        return value;
-    }
-
-    public void setValue(double value) {
-        this.value = value;
-    }
-
     public int getAmount() {
         return amount;
     }
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    public double getCost() {
+        return cost;
+    }
+
+    public void setCost(double cost) {
+        this.cost = cost;
     }
 
 }
