@@ -20,11 +20,13 @@ public class Report {
     private List<Sale> sales;
     private Map<String, Integer> salesMap;
     private Map<String, Double> costMap;
+    private Map<String, Integer> occurenceMap;
 
     public Report(List<Sale> sales) {
         this.sales = sales;
         salesMap = new HashMap<>();
         costMap = new HashMap<>();
+        occurenceMap = new HashMap<>();
     }
 
     public void setSales(List<Sale> sales) {
@@ -41,16 +43,31 @@ public class Report {
 
     void generateReport() {
         sales.forEach(sale -> {
-            if (!(salesMap.containsKey(sale.getType()))) {
-                salesMap.put(sale.getType(), 0);
-            }
-            salesMap.put(sale.getType(), salesMap.get(sale.getType()) + 1);
+            double saleTotal = 0;
 
-            if (!(costMap.containsKey(sale.getType()))) {
-                costMap.put(sale.getType(), 0.0);
+            if (sale.getAmount() != null && sale.getAmount() > 0) {
+                double amount = Double.valueOf(sale.getAmount());
+                saleTotal = sale.getCost() * amount;
+                if (!(salesMap.containsKey(sale.getType()))) {
+                    salesMap.put(sale.getType(), 0);
+                }
+                if (!(costMap.containsKey(sale.getType()))) {
+                    costMap.put(sale.getType(), 0.0);
+                }
+                costMap.put(sale.getType(), costMap.get(sale.getType()) + saleTotal);
+                salesMap.put(sale.getType(), salesMap.get(sale.getType()) + sale.getAmount());
             }
-            costMap.put(sale.getType(), costMap.get(sale.getType()) + sale.getCost());
+            else if (sale.getAmount() == null) {
+                if (!(salesMap.containsKey(sale.getType()))) {
+                    salesMap.put(sale.getType(), 0);
+                }
+                salesMap.put(sale.getType(), salesMap.get(sale.getType()) + 1);
 
+                if (!(costMap.containsKey(sale.getType()))) {
+                    costMap.put(sale.getType(), 0.0);
+                }
+                costMap.put(sale.getType(), costMap.get(sale.getType()) + sale.getCost());
+            }
         });
 
         System.out.println("____TOTAL NUMBER OF SALES PER ITEM______");

@@ -13,7 +13,7 @@ public final class Sale {
 
     private String type;
     private double cost;
-    private int amount;
+    private Integer amount;
 
     public Sale(String input) {
         if (input != null || !"".equals(input)) {
@@ -45,20 +45,20 @@ public final class Sale {
         this.type = type;
     }
 
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
     public double getCost() {
         return cost;
     }
 
     public void setCost(double cost) {
         this.cost = cost;
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 
 }
