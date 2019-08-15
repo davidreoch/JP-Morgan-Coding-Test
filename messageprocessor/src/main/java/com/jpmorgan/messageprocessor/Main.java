@@ -29,7 +29,7 @@ public class Main {
             MessageProcessor mp = new MessageProcessor(prop);
         }
         catch (IOException ex) {
-            ex.printStackTrace();
+            System.out.println(ex.getMessage() + ", Please move the config.properties file to the same directory as the JAR.");
         }
 
     }
