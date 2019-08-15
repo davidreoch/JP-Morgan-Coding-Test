@@ -14,6 +14,7 @@ public final class Sale {
     private String type;
     private double cost;
     private Integer amount;
+    private String adjustment;
 
     public Sale(String input) {
         if (input != null || !"".equals(input)) {
@@ -27,6 +28,10 @@ public final class Sale {
                 this.setType(line[0]);
                 this.setCost(Double.parseDouble(line[1]));
                 this.setAmount(Integer.parseInt(line[2]));
+            } else if (line.length == 4){
+                this.setType(line[1]);
+                this.setCost(Double.parseDouble(line[2]));
+                this.setAdjustment(line[3]);
             }
             else {
                 System.out.println("Message in incorrect format!");
@@ -60,5 +65,12 @@ public final class Sale {
     public void setAmount(Integer amount) {
         this.amount = amount;
     }
+    
+    public String getAdjustment() {
+        return adjustment;
+    }
 
+    public void setAdjustment(String adjustment) {
+        this.adjustment = adjustment;
+    }
 }

@@ -9,6 +9,7 @@ import com.jpmorgan.objects.Sale;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -41,45 +42,41 @@ public class Report {
         this.salesCount = salesCount;
     }
 
+    private double sumSales(Sale sale) {
+
+        double sum = sales.stream()
+                .filter(s -> s.getAmount() != null)
+                .filter(s -> s.getType().equals(sale.getType()))
+                .mapToDouble(s -> s.getAmount() * s.getCost()).sum();
+
+        sum += sales.stream()
+                .filter(s -> s.getAmount() == null)
+                .filter(s -> s.getType().equals(sale.getType()))
+                .filter(s -> s.getAdjustment() == null)
+                .mapToDouble(s -> s.getCost()).sum();
+
+        return sum;
+    }
+
     void generateReport() {
-        sales.forEach(sale -> {
-            double saleTotal = 0;
-
-            if (sale.getAmount() != null && sale.getAmount() > 0) {
-                double amount = Double.valueOf(sale.getAmount());
-                saleTotal = sale.getCost() * amount;
-                if (!(salesMap.containsKey(sale.getType()))) {
-                    salesMap.put(sale.getType(), 0);
-                }
-                if (!(costMap.containsKey(sale.getType()))) {
-                    costMap.put(sale.getType(), 0.0);
-                }
-                costMap.put(sale.getType(), costMap.get(sale.getType()) + saleTotal);
-                salesMap.put(sale.getType(), salesMap.get(sale.getType()) + sale.getAmount());
-            }
-            else if (sale.getAmount() == null) {
-                if (!(salesMap.containsKey(sale.getType()))) {
-                    salesMap.put(sale.getType(), 0);
-                }
-                salesMap.put(sale.getType(), salesMap.get(sale.getType()) + 1);
-
-                if (!(costMap.containsKey(sale.getType()))) {
-                    costMap.put(sale.getType(), 0.0);
-                }
-                costMap.put(sale.getType(), costMap.get(sale.getType()) + sale.getCost());
-            }
-        });
-
-        System.out.println("____TOTAL NUMBER OF SALES PER ITEM______");
-        for (Map.Entry<String, Integer> entry : salesMap.entrySet()) {
-            System.out.println(entry.getKey() + ":" + entry.getValue());
+        Map<String, Double> resultSet = new HashMap<>();
+        for (Sale sale : sales) {
+            resultSet.put(sale.getType(), sumSales(sale));
         }
 
-        System.out.println("____TOTAL VALUE PER ITEM______");
-        for (Map.Entry<String, Double> entry : costMap.entrySet()) {
+        System.out.println("____TOTAL NUMBER OF SALES PER ITEM______");
+        for (Map.Entry<String, Double> entry : resultSet.entrySet()) {
             System.out.println(entry.getKey() + ":" + entry.getValue());
         }
     }
 
 //        Map<String, Book> result = books.stream() .collect(Collectors.toMap(Book::getISBN, b -> b));
+    void printAdjustments() {
+        System.out.println("____ADJUSTMENTSMADE______");
+        sales.forEach(sale -> {
+            if (sale.getAdjustment() != null) {
+                System.out.println("Adjustment was made to " + sale.getAdjustment() + " from all products of type: " + sale.getType() + " at the value of: " + sale.getCost());
+            }
+        });
+    }
 }

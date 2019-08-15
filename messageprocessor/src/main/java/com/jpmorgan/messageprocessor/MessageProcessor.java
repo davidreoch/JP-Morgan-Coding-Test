@@ -28,6 +28,7 @@ public class MessageProcessor implements Processor {
     private String fileDirectory;
     private List<Sale> sales;
     private int salesCount = 0;
+    private int totalSalesCount = 0;
 
     public MessageProcessor(Properties prop) {
         sales = new ArrayList();
@@ -43,9 +44,23 @@ public class MessageProcessor implements Processor {
         salesCount++;
         sales.add(sale);
         
+        
+        if(sale.getAdjustment() != null && sale.getAdjustment().equals("add")){
+            sales.stream().forEach(s -> {
+                if(s.getType().equals(sale.getType())){
+                    s.setCost(sale.getCost() + s.getCost());
+                }
+            });
+        }
+        
         if(salesCount == 10){
+            totalSalesCount += salesCount;
             salesCount = 0;
             report.generateReport();
+        }else if(totalSalesCount == 50){
+            System.out.println("System is pausing");
+            report.printAdjustments();
+            System.exit(0);
         }
     }
 
