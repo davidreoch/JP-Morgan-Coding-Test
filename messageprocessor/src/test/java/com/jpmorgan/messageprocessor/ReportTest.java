@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 
 /**
- *
+ * A class containing tests for the processing of sales
  * @author David Reoch
  */
 public class ReportTest {

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * Class to generate a report on sales
  * @author David Reoch
  */
 public class SalesReport implements Report {
@@ -31,9 +31,6 @@ public class SalesReport implements Report {
         return sum;
     }
 
-    /**
-     * generates a report from the supplied input file containing sales
-     */
     @Override
     public void generateReport() {
 
@@ -57,10 +54,6 @@ public class SalesReport implements Report {
         });
     }
 
-    /**
-     * Performs an addition, subtraction, multiplication adjustment for each sale of a given type
-     * @param sale
-     */
     @Override
     public void performAdjustment(final Sale sale) {
         if (sale.getAdjustment() != null && sale.getAdjustment().equals("add")) {
@@ -93,10 +86,6 @@ public class SalesReport implements Report {
         }
     }
 
-    /**
-     * Gets the sales results 
-     * @return Returns a map containing the sales
-     */
     @Override
     public Map<String, Double> getResult() {
         return resultSet;

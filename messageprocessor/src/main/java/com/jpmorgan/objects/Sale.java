@@ -1,12 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.jpmorgan.objects;
 
 /**
- *
+ * Sale class 
  * @author David Reoch
  */
 public final class Sale {
@@ -16,6 +11,10 @@ public final class Sale {
     private Integer amount;
     private String adjustment;
 
+    /**
+     * Constructor for a sale object
+     * @param input line to parse into a sale
+     */
     public Sale(String input) {
         if (input != null || !"".equals(input)) {
             String[] line = input.split("\\|");

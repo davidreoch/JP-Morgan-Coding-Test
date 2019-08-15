@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.jpmorgan.messageprocessor;
 
 import com.jpmorgan.objects.Sale;
@@ -23,12 +18,16 @@ public final class MessageProcessor implements Processor {
 
     final private Report report;
     final private Properties prop;
-    private final String filename;
-    private final String fileDirectory;
-    private final List<Sale> sales;
+    final private String filename;
+    final private String fileDirectory;
+    final private List<Sale> sales;
     private int salesCount = 0;
     private int totalSalesCount = 0;
 
+    /**
+     * Constructor for message processor
+     * @param prop Properties file 
+     */
     public MessageProcessor(final Properties prop) {
         sales = new ArrayList();
         report = new SalesReport(sales);
@@ -38,9 +37,7 @@ public final class MessageProcessor implements Processor {
         read();
     }
 
-    /**
-     * This method reads each line from the input file for processing
-     */
+
     @Override
     public void read() {
         final String fileName = this.fileDirectory + File.separator + this.filename;
@@ -54,10 +51,6 @@ public final class MessageProcessor implements Processor {
         }
     }
 
-    /**
-     * This method processes each sale and performs the necessary operations on each one
-     * @param input single line of input representing a sale
-     */
     @Override
     public void process(final String input) {
         final Sale sale = new Sale(input);
